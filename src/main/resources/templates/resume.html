@@ -1,0 +1,132 @@
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resume | Resume Analyzer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+
+        <a class="brand-row" href="/">
+            <span class="brand">RA</span>
+            <span>
+                <b>Resume Analyzer</b>
+                <small>Career workspace</small>
+            </span>
+        </a>
+
+        <nav>
+            <a href="/">⌂ Dashboard</a>
+            <a class="active" href="/resume">▤ Resume Upload</a>
+            <a href="/jobs">⌕ Job Research</a>
+            <a href="/diary">◷ Day-to-Day Performance</a>
+            <a href="/calendar">▦ Calendar Highlights</a>
+            <a href="/notes">✎ My Notes</a>
+        </nav>
+
+        <div class="side-bottom">
+            <small th:text="${email}">user@email.com</small>
+
+            <form method="post" th:action="@{/logout}">
+                <button class="logout" type="submit">↪ Logout</button>
+            </form>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            Resume Analyzer
+            <span class="avatar"
+                  th:text="${#strings.substring(email,0,1).toUpperCase()}">U</span>
+        </header>
+
+        <section class="content">
+
+            <h1>Resume Analyzer</h1>
+
+            <p class="muted">
+                Upload your PDF or DOCX resume and compare it with your target job.
+            </p>
+
+            <div class="panel">
+
+                <h2>Upload Your Resume</h2>
+
+                <form method="post"
+                      th:action="@{/resume/analyze}"
+                      enctype="multipart/form-data">
+
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}">
+
+                    <label>Resume file (maximum 5 MB)</label>
+
+                    <input type="file"
+                           name="file"
+                           accept=".pdf,.docx"
+                           required>
+
+                    <label>Target Job Description</label>
+
+                    <textarea name="jobDescription"
+                              rows="6"
+                              placeholder="Paste your target job description here..."></textarea>
+
+                    <button class="btn" type="submit">
+                        Analyze Resume
+                    </button>
+
+                </form>
+
+                <p class="error" th:if="${param.error}">
+                    Upload failed. Please check your file and try again.
+                </p>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>Analysis History</h2>
+
+                <div th:each="r : ${resumes}" class="analysis">
+
+                    <div class="analysis-top">
+                        <b th:text="${r.fileName}">Resume.pdf</b>
+
+                        <strong class="score"
+                                th:text="${r.matchScore + '%'}">0%</strong>
+                    </div>
+
+                    <pre th:text="${r.analysis}"></pre>
+
+                </div>
+
+                <p th:if="${#lists.isEmpty(resumes)}" class="muted">
+                    No analysis yet. Upload your first resume!
+                </p>
+
+            </div>
+
+        </section>
+
+        <footer>
+            © 2026 Resume Analyzer · Your career, organized.
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

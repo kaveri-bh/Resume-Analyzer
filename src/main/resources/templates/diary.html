@@ -1,0 +1,112 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Diary | Resume Analyzer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <a class="brand-row" href="/">
+            <span class="brand">RA</span>
+            <span>
+                <b>Resume Analyzer</b>
+                <small>Career workspace</small>
+            </span>
+        </a>
+
+        <nav>
+            <a href="/"><span>⌂</span>Dashboard</a>
+            <a href="/resume"><span>▤</span>Resume Upload</a>
+            <a href="/jobs"><span>⌕</span>Job Research</a>
+            <a class="active" href="/diary"><span>◷</span>Day-to-Day Performance</a>
+            <a href="/calendar"><span>▦</span>Calendar Highlights</a>
+            <a href="/notes"><span>✎</span>My Notes</a>
+        </nav>
+
+        <div class="side-bottom">
+            <small th:text="${email}">user@email.com</small>
+            <a href="/login">Login another account</a>
+
+            <form method="post" th:action="@{/logout}">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+                <button class="logout">↪ Logout</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            Resume Analyzer
+            <span class="avatar"
+                  th:text="${#strings.substring(email,0,1).toUpperCase()}">U</span>
+        </header>
+
+        <section class="content">
+            <h1>Day-to-Day Performance</h1>
+            <p class="muted">
+                Enter your day 1 learning and continue your learning diary.
+            </p>
+
+            <div class="panel">
+                <form method="post" th:action="@{/diary}">
+
+                    <!-- CSRF security token -->
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}">
+
+                    <label>Today's topic</label>
+                    <input name="topic"
+                           placeholder="Java Collections – Day 1"
+                           required>
+
+                    <label>Hours spent</label>
+                    <input name="hours"
+                           type="number"
+                           min="0"
+                           max="24"
+                           step=".5"
+                           value="1">
+
+                    <label>What did you learn?</label>
+                    <textarea name="details"
+                              rows="4"
+                              required></textarea>
+
+                    <button class="btn" type="submit">
+                        Save diary entry
+                    </button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>Learning history</h2>
+
+                <div class="diary-entry" th:each="e : ${entries}">
+                    <b th:text="${e.topic}"></b>
+                    ·
+                    <span th:text="${e.entryDate}"></span>
+
+                    <p th:text="${e.details}"></p>
+                    <small th:text="${e.hours + ' hours'}"></small>
+                </div>
+
+                <p th:if="${#lists.isEmpty(entries)}" class="muted">
+                    No learning entries yet. Add your first learning entry!
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            © 2026 Resume Analyzer · Your career, organized.
+        </footer>
+    </main>
+</div>
+</body>
+</html>

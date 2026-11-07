@@ -1,0 +1,252 @@
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Jobs | Resume Analyzer</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        .job-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+        }
+
+        .job-card h3 {
+            color: #17345f;
+        }
+
+        .job-card p {
+            color: #718096;
+        }
+
+        .job-card .job-action {
+            display: inline-block;
+            margin-top: 12px;
+            color: #2563eb;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <a class="brand-row" href="/">
+            <span class="brand">RA</span>
+            <span>
+                <b>Resume Analyzer</b>
+                <small>Career workspace</small>
+            </span>
+        </a>
+
+        <nav>
+            <a href="/">⌂ Dashboard</a>
+            <a href="/resume">▤ Resume Upload</a>
+            <a class="active" href="/jobs">⌕ Job Research</a>
+            <a href="/diary">◷ Day-to-Day Performance</a>
+            <a href="/calendar">▦ Calendar Highlights</a>
+            <a href="/notes">✎ My Notes</a>
+        </nav>
+
+        <div class="side-bottom">
+
+            <small th:text="${email}">user@email.com</small>
+
+            <a href="/login">Login another account</a>
+
+            <form method="post" th:action="@{/logout}">
+                <button class="logout">↪ Logout</button>
+            </form>
+
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="topbar">
+
+            Resume Analyzer
+
+            <span class="avatar"
+                  th:text="${#strings.substring(email,0,1).toUpperCase()}">
+                U
+            </span>
+
+        </header>
+
+        <section class="content">
+
+            <h1>Job Research</h1>
+
+            <p class="muted">
+                Explore career opportunities based on your skills.
+                Click a role to find relevant jobs.
+            </p>
+
+            <!-- Job Role Cards -->
+            <div class="grid">
+
+                <a class="feature job-card"
+                   href="https://www.linkedin.com/jobs/search/?keywords=Java%20Developer%20Trainee"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    <h3>Java Developer Trainee</h3>
+
+                    <p>
+                        Core Java, OOP, SQL, Spring Boot, REST APIs.
+                        Build projects and share GitHub.
+                    </p>
+
+                    <span class="job-action">
+                        Explore Java Jobs ↗
+                    </span>
+
+                </a>
+
+                <a class="feature job-card"
+                   href="https://www.linkedin.com/jobs/search/?keywords=Backend%20Developer%20Intern"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    <h3>Backend Developer Intern</h3>
+
+                    <p>
+                        Java/Python, databases, APIs and debugging.
+                        Showcase a backend project.
+                    </p>
+
+                    <span class="job-action">
+                        Explore Backend Jobs ↗
+                    </span>
+
+                </a>
+
+                <a class="feature job-card"
+                   href="https://www.linkedin.com/jobs/search/?keywords=QA%20Testing%20Trainee"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    <h3>QA / Testing Trainee</h3>
+
+                    <p>
+                        Testing basics, SQL, test cases
+                        and automation fundamentals.
+                    </p>
+
+                    <span class="job-action">
+                        Explore Testing Jobs ↗
+                    </span>
+
+                </a>
+
+                <a class="feature job-card"
+                   href="https://www.linkedin.com/jobs/search/?keywords=Web%20Developer%20Intern"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    <h3>Web Developer Intern</h3>
+
+                    <p>
+                        HTML, CSS, JavaScript and responsive UI.
+                        Share a portfolio.
+                    </p>
+
+                    <span class="job-action">
+                        Explore Web Jobs ↗
+                    </span>
+
+                </a>
+
+            </div>
+
+            <!-- Job Websites -->
+            <div class="panel">
+
+                <h2>Job Websites</h2>
+
+                <div class="link-list">
+
+                    <a href="https://www.linkedin.com/jobs/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        LinkedIn Jobs ↗
+                    </a>
+
+                    <a href="https://www.naukri.com/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Naukri ↗
+                    </a>
+
+                    <a href="https://in.indeed.com/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Indeed ↗
+                    </a>
+
+                    <a href="https://internshala.com/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Internshala ↗
+                    </a>
+
+                    <a href="https://www.ncs.gov.in/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        National Career Service ↗
+                    </a>
+
+                </div>
+
+                <p class="muted">
+                    Click a website to explore available job opportunities.
+                </p>
+
+            </div>
+
+            <!-- Latest Resume Analysis -->
+            <div class="panel">
+
+                <h2>Latest Resume Analysis</h2>
+
+                <pre th:if="${latest != null}"
+                     th:text="${latest.analysis}"></pre>
+
+                <p th:if="${latest == null}">
+                    Upload a resume to get started.
+                </p>
+
+            </div>
+
+        </section>
+
+        <footer>
+            © 2026 Resume Analyzer · Your career, organized.
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>
